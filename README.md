@@ -1,33 +1,54 @@
----
-title: ExpressJS Postgres
-description: An ExpressJS server that connects to a PostgreSQL database
-tags:
-  - express
-  - postgresql
-  - typescript
----
+# ExpressJS Starter Template
 
-# ExpressJS Postgres Example
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/Vp8hse?referralCode=vimo)
 
-This example starts an [ExpressJS](https://expressjs.com/) server that connects
-to a Railway PostgreSQL database.
+This is boilerplate/starter project for quickly building RESTful APIs using Node.js and [Express](https://expressjs.com/), written in JavaScript.
+It will help you get started with a simple to follow format with some examples for routes, logging and middleware.
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/VUVlu3)
+## Includes
 
-## ✨ Features
+### Server utilites:
 
-- Postgres
-- Express
-- TypeScript
+- [morgan](https://www.npmjs.com/package/morgan)- HTTP request logger middleware for Node.js
+- [dotenv](https://www.npmjs.com/package/dotenv)- Loads environment variables from `.env` file into `process.env`
+- [cors](https://www.npmjs.com/package/cors)- CORS provides a Connect/Express middleware that can be used to enable CORS with various options.
 
-## 💁‍♀️ How to use
+### Development utilites
 
-- Install dependencies `yarn`
-- [Create a Railway project with the Postgres plugin](https://dev.new)
-- Connect to your Railway project `railway link`
-- Start the server `railway run yarn dev`
+- [nodemon](https://www.npmjs.com/package/nodemon)- Helps develop node.js based application by automatically restarting the node server when it detects application file changes.
 
-## 📝 Notes
+## Commands
 
-The server started simply returns the current time in the database. The SQL
-query is located in `src/index.js`.
+### Setup
+
+```
+yarn
+```
+
+### Development
+
+```
+yarn dev
+```
+
+## About
+
+The server runs a simple Express API server
+
+`/` returns `status: ok`
+
+`/hello` returns `message: Hello World!`
+
+Unknown endpoints are handled in a middleware file.
+
+The `hello` route is defined in the `helloRoute`
+
+## Project Structure
+
+```
+src\
+ |--routes\         # Routes
+ |--utils\          # Utility files
+ |--app.js          # Express app
+ |--index.js        # App entry point
+```
