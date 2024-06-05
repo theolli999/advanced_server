@@ -98,7 +98,7 @@ app.get("/auth/spotify/callback",
   function(req, res) {
     // Användaren har framgångsrikt autentiserats och omdirigerats hit.
     // req.user innehåller användarinformationen.
-    res.redirect(process.env.FRONTEND + "/play");
+    res.redirect(process.env.FRONTEND + "play");
   }
 );
 
