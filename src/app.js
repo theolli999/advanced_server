@@ -21,7 +21,7 @@ app.use(express.json());
 
 // enable cors
 app.use(cors({
-  origin: 'https://frontend-production-cae1.up.railway.app', // remove trailing slash
+  origin: 'https://frontend-production-cae1.up.railway.app/', // remove trailing slash
   methods: ['GET', 'POST'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -63,7 +63,7 @@ passport.use(
     {
       clientID: process.env.SPOTIFY_CLIENT_ID,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-      callbackURL: "https://advancedserver-production.up.railway.app/auth/spotify/callback",
+      callbackURL: process.env.SPOTIFY_CALLBACK_URL,
       scope: ['user-top-read', 'app-remote-control', 'user-modify-playback-state']
     },
     (accessToken, refreshToken, expires_in, profile, done) => {
