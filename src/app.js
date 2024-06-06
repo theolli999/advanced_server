@@ -47,7 +47,6 @@ passport.serializeUser(function(user, done) {
 
 passport.deserializeUser(function(id, done) {
   const query = 'SELECT * FROM users WHERE id = $1';
-  console.log("deserializeUser:", id);
   pool.query(query, [id], (error, results) => {
     if (error) {
       console.log(error.stack)
@@ -67,23 +66,43 @@ passport.use(
       scope: ['user-top-read', 'app-remote-control', 'user-modify-playback-state']
     },
     (accessToken, refreshToken, expires_in, profile, done) => {
-
-      const query = `
-        INSERT INTO users (id, display_name, access_token, refresh_token, expires_in) 
-        VALUES ($1, $2, $3, $4, $5) 
-        ON CONFLICT (id) 
-        DO UPDATE SET access_token = $3, refresh_token = $4, expires_in = $5
-      `;
-
-      const values = [parseInt(profile.id), profile.displayName, accessToken, refreshToken, expires_in];
-
-      pool.query(query, values, (error, results) => {
+      const queryCheck = 'SELECT * FROM users WHERE id = $1';
+      pool.query(queryCheck, [profile.id], (error, results) => {
         if (error) {
           console.error('Database error:', error);
+          return done(error);
+        } else if (results.rows.length > 0) {
+          // User already exists in the database, update the tokens
+          const queryUpdate = `
+            UPDATE users 
+            SET access_token = $1, refresh_token = $2, expires_in = $3
+            WHERE id = $4
+          `;
+          const valuesUpdate = [accessToken, refreshToken, expires_in, profile.id];
+          pool.query(queryUpdate, valuesUpdate, (error, results) => {
+            if (error) {
+              console.error('Database error:', error);
+            } else {
+              console.log('Update successful:', results);
+            }
+            return done(null, profile);
+          });
         } else {
-          console.log('Insert successful:', results);
+          // User does not exist in the database, create a new entry
+          const queryInsert = `
+            INSERT INTO users (id, display_name, access_token, refresh_token, expires_in) 
+            VALUES ($1, $2, $3, $4, $5)
+          `;
+          const valuesInsert = [profile.id, profile.displayName, accessToken, refreshToken, expires_in];
+          pool.query(queryInsert, valuesInsert, (error, results) => {
+            if (error) {
+              console.error('Database error:', error);
+            } else {
+              console.log('Insert successful:', results);
+            }
+            return done(null, profile);
+          });
         }
-        return done(null, profile);
       });
     }
   )
@@ -104,18 +123,15 @@ app.get("/auth/spotify/callback",
 
 // healthcheck endpointF
 app.get("/", (req, res) => {
-  console.log("GET /");
   res.status(200).send({ status: "ok" });
 });
 
 app.get('/users/name', (req, res) => {
-  console.log("user is: ", req.user)
   const name = req.user.display_name;
   res.status(200).json(name);
 });
 
 app.get('/users/token', (req, res) => {
-  console.log(req.user)
   const token = req.user.access_token;
   res.status(200).json(token);
 });
