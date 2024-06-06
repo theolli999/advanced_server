@@ -21,7 +21,7 @@ app.use(express.json());
 
 // enable cors
 app.use(cors({
-  origin: '*', // ersätt med din frontend-domän
+  origin: 'https://frontend-production-cae1.up.railway.app/', // ersätt med din frontend-domän
   methods: ['GET', 'POST'], // de metoder du vill tillåta
   credentials: true, // tillåt att cookies skickas
   allowedHeaders: ['Content-Type', 'Authorization'] // de headers du vill tillåta
@@ -63,7 +63,7 @@ passport.use(
     {
       clientID: process.env.SPOTIFY_CLIENT_ID,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-      callbackURL: process.env.SPOTIFY_CALLBACK_URL,
+      callbackURL: "https://advancedserver-production.up.railway.app/auth/spotify/callback",
       scope: ['user-top-read', 'app-remote-control', 'user-modify-playback-state']
     },
     (accessToken, refreshToken, expires_in, profile, done) => {
