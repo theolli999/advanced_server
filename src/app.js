@@ -21,7 +21,7 @@ app.use(express.json());
 
 // enable cors
 app.use(cors({
-  origin: 'https://frontend-production-cae1.up.railway.app/', // remove trailing slash
+  origin: 'https://frontend-production-cae1.up.railway.app', // remove trailing slash
   methods: ['GET', 'POST'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization']
