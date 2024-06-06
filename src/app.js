@@ -21,10 +21,10 @@ app.use(express.json());
 
 // enable cors
 app.use(cors({
-  origin: 'https://frontend-production-cae1.up.railway.app/', // ersätt med din frontend-domän
-  methods: ['GET', 'POST'], // de metoder du vill tillåta
-  credentials: true, // tillåt att cookies skickas
-  allowedHeaders: ['Content-Type', 'Authorization'] // de headers du vill tillåta
+  origin: 'https://frontend-production-cae1.up.railway.app', // remove trailing slash
+  methods: ['GET', 'POST'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // request logger middleware
